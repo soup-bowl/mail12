@@ -1,0 +1,70 @@
+
+<div class="wrap">
+    <h1>{{ title }} Settings</h1>
+    
+    {% if saved == true %}
+    <div id="setting-error-settings_updated" class="updated settings-error notice is-dismissible"> 
+        <p><strong>Settings saved.</strong></p>
+        <button type="button" class="notice-dismiss">
+            <span class="screen-reader-text">Dismiss this notice.</span>
+        </button>
+    </div>
+    {% endif %}
+
+    <form method="post">
+        <h2>Email Server Configuration</h2>
+
+        <table class="form-table">
+            <tbody>
+                <tr>
+                    <th scope="row">
+                        <label for="mail_protocol">Mail Protocol</label>
+                    </th>
+                    <td>
+                        <select name="mail_protocol" id="mail_protocol">
+                        {% for protocol in protocols %}
+                            <option {{ data["protocol"] == protocol ? 'selected="selected"' : '' }} value="{{ protocol }}">{{ protocol }}</option>
+                        {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Incoming Settings</h3>
+        <table class="form-table">
+            <tbody>
+                <tr>
+                    <th scope="row">
+                        <label for="incoming_mailserver_url">Mail Server</label>
+                    </th>
+                    <td>
+                        <input name="incoming_mailserver_url" type="text" id="incoming_mailserver_url" placeholder="mail.example.com" value="{{ data["incomingUrl"] }}" class="regular-text code">
+                        <label for="incoming_mailserver_port">Port</label>
+                        <input name="incoming_mailserver_port" type="text" id="incoming_mailserver_port" placeholder="110" value="{{ data["incomingPort"] }}" class="small-text">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Outgoing Settings</h3>
+        <table class="form-table">
+            <tbody>
+                <tr>
+                    <th scope="row">
+                        <label for="outgoing_mailserver_url">Mail Server</label>
+                    </th>
+                    <td>
+                        <input name="outgoing_mailserver_url" type="text" id="outgoing_mailserver_url" placeholder="mail.example.com" value="{{ data["outgoingUrl"] }}" class="regular-text code">
+                        <label for="outgoing_mailserver_port">Port</label>
+                        <input name="outgoing_mailserver_port" type="text" id="outgoing_mailserver_port" placeholder="110" value="{{ data["outgoingPort"] }}" class="small-text">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p class="submit">
+            <input type="submit" name="submit" id="submit" class="button button-primary" value="Save Changes">
+        </p>
+    </form>
+<div>
