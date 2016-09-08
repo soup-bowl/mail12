@@ -2,11 +2,18 @@
 
 /** @var Herbert\Framework\Http $http */
 
-use Herbert\Framework\Models\Post;
+use MailTwelve\Models\User;
+use MailTwelve\Models\UserMeta;
 use Herbert\Framework\Http;
 use MailTwelve\Helper;
 
 class SettingsController {
+    protected $UserMeta;
+    
+    public function __construct(UserMeta $UserMeta) {
+        $this->UserMeta = $UserMeta;
+    }
+    
     public function getSettingsPanel(Http $http) {
         $options = unserialize( get_option('m12e-settings') );
 
@@ -37,7 +44,7 @@ class SettingsController {
     }
     
     public function getUserSettingsPanel(Http $http) {
-        $options = unserialize( get_user_meta( get_current_user_id(), 'm12e-user-settings', true) );
+        $options = $this->UserMeta->GetUserSettings();
 
         if ( $http->has('account_username') ) {
             $postback = true;
@@ -47,7 +54,7 @@ class SettingsController {
             $options_pure["password"] = $http->get('account_password');
             $options = $options_pure;
 
-            update_user_meta( get_current_user_id(), 'm12e-user-settings', serialize($options) );
+            $this->UserMeta->SetUserSettings( $options );
         } else {
             $postback = false;
         }
