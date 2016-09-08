@@ -5,7 +5,7 @@ return [
     /**
      * My plugin name
      */
-    'pluginName' => 'Mail12',
+    'pluginName' => 'MailMan',
 
     /**
      * My table prefix

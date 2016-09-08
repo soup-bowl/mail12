@@ -2,7 +2,7 @@
 
 /**
  * @wordpress-plugin
- * Plugin Name:       Mail12
+ * Plugin Name:       MailMan
  * Description:       A lightweight email client integrated into WordPress admin.
  * Version:           0.0.1
  * Author:            Casey L.
