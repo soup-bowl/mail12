@@ -35,4 +35,27 @@ class SettingsController {
             'saved'     => $postback
         ]);
     }
+    
+    public function getUserSettingsPanel(Http $http) {
+        $options = unserialize( get_user_meta( get_current_user_id(), 'm12e-user-settings', true) );
+
+        if ( $http->has('account_username') ) {
+            $postback = true;
+
+            $options_pure                 =  array();
+            $options_pure["username"] = $http->get('account_username');
+            $options_pure["password"] = $http->get('account_password');
+            $options = $options_pure;
+
+            update_user_meta( get_current_user_id(), 'm12e-user-settings', serialize($options) );
+        } else {
+            $postback = false;
+        }
+
+        return view('@MailTwelve/settings-user.twig', [
+            'title'     => Helper::get('pluginName'),
+            'data'      => $options,
+            'saved'     => $postback
+        ]);
+    }
 }

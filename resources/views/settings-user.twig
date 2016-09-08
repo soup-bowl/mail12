@@ -1,0 +1,42 @@
+
+<div class="wrap">
+    <h1>{{ title }} Settings</h1>
+    
+    {% if saved == true %}
+    <div id="setting-error-settings_updated" class="updated settings-error notice is-dismissible"> 
+        <p><strong>Your mail settings have been saved.</strong></p>
+        <button type="button" class="notice-dismiss">
+            <span class="screen-reader-text">Dismiss this notice.</span>
+        </button>
+    </div>
+    {% endif %}
+
+    <form method="post">
+        <h2>Email Server Configuration</h2>
+
+        <table class="form-table">
+            <tbody>
+                <tr>
+                    <th scope="row">
+                        <label for="account_username">Username</label>
+                    </th>
+                    <td>
+                        <input name="account_username" type="text" id="account_username" value="{{ data["username"] }}" class="regular-text code">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">
+                        <label for="account_password">Password</label>
+                    </th>
+                    <td>
+                        <input name="account_password" type="text" id="account_password" value="{{ data["password"] }}" class="regular-text code">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p class="submit">
+            <input type="submit" name="submit" id="submit" class="button button-primary" value="Save Changes">
+        </p>
+    </form>
+<div>

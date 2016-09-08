@@ -19,3 +19,12 @@ $panel->add([
     'slug'   => 'mailtwelve-settings',
     'uses'   => __NAMESPACE__ . '\Controllers\SettingsController@getSettingsPanel'
 ]);
+
+$panel->add([
+    'type'   => 'wp-sub-panel',
+    'parent' => 'users.php',
+    'as'     => 'dashboardSubpanel',
+    'title'  => Helper::get('pluginName') . ' Settings',
+    'slug'   => 'mailtwelve-user-settings',
+    'uses'   => __NAMESPACE__ . '\Controllers\SettingsController@getUserSettingsPanel'
+]);
