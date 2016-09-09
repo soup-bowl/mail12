@@ -2,6 +2,7 @@
 
 /** @var Herbert\Framework\Http $http */
 
+use MailTwelve\Services\settingService;
 use MailTwelve\Models\User;
 use MailTwelve\Models\UserMeta;
 use Herbert\Framework\Models\Option;
@@ -9,12 +10,14 @@ use Herbert\Framework\Http;
 use MailTwelve\Helper;
 
 class SettingsController {
+	protected $SettingsService;
 	protected $UserMeta;
 	protected $Option;
 	
-	public function __construct(UserMeta $UserMeta, Option $Option) {
-		$this->UserMeta = $UserMeta;
-		$this->Option   = $Option;
+	public function __construct(SettingService $SettingsService, UserMeta $UserMeta, Option $Option) {
+		$this->SettingService = $SettingsService;
+		$this->UserMeta       = $UserMeta;
+		$this->Option         = $Option;
 	}
 	
 	public function getSettingsPanel(Http $http) {
@@ -47,7 +50,7 @@ class SettingsController {
 	}
 	
     public function getUserSettingsPanel(Http $http) {
-		$options = $this->UserMeta->GetUserSettings();
+		$options = $this->SettingService->GetUserSettings();
 		
 		if ( $http->has('account_username') ) {
 			$postback = true;
@@ -57,7 +60,7 @@ class SettingsController {
 			$options_pure["password"] = $http->get('account_password');
 			$options = $options_pure;
 			
-			$this->UserMeta->SetUserSettings( $options );
+			$this->SettingService->SetUserSettings( $options );
 		} else {
 			$postback = false;
 		}
