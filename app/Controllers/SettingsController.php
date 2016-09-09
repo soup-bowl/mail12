@@ -3,25 +3,18 @@
 /** @var Herbert\Framework\Http $http */
 
 use MailTwelve\Services\settingService;
-use MailTwelve\Models\User;
-use MailTwelve\Models\UserMeta;
-use Herbert\Framework\Models\Option;
 use Herbert\Framework\Http;
 use MailTwelve\Helper;
 
 class SettingsController {
 	protected $SettingsService;
-	protected $UserMeta;
-	protected $Option;
 	
-	public function __construct(SettingService $SettingsService, UserMeta $UserMeta, Option $Option) {
+	public function __construct(SettingService $SettingsService) {
 		$this->SettingService = $SettingsService;
-		$this->UserMeta       = $UserMeta;
-		$this->Option         = $Option;
 	}
 	
 	public function getSettingsPanel(Http $http) {
-		$options = unserialize( get_option('m12e-settings') );
+		$options = $this->SettingService->GetMailSystemSettings();
 		
 		if ( $http->has('mail_protocol') ) {
 			$postback = true;
@@ -34,7 +27,7 @@ class SettingsController {
 			$options_pure["outgoingPort"] = $http->get('outgoing_mailserver_port');
 			$options = $options_pure;
 			
-			update_option( 'm12e-settings', serialize($options) );
+			$this->SettingService->SetMailSystemSettings( $options );
 		} else {
 			$postback = false;
 		}

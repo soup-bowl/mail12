@@ -49,5 +49,36 @@ class SettingService extends service {
 		
 		return $entry;
 	}
+	
+	/**
+	 * Grabs the mail system setting collection.
+	 * @return array[]|boolean
+	 */
+	public function GetMailSystemSettings() {
+		$options = $this->Option->where('option_name', '=', 'm12e-settings')->first();
+		
+		if (empty($options)) {
+			return false;
+		} else {
+			return unserialize($options->option_value);
+		}
+	}
+	
+	/**
+	 * Saves the mail system configuration to the system.
+	 * @param array[] $configs 
+	 * @return array[]
+	 */
+	public function SetMailSystemSettings($configs) {
+		$settingCollection = $this->Option->where('option_name', '=', 'm12e-settings')->first();
+		$settingCollection = (empty($settingCollection)) ? new Option() : $settingCollection;
+		
+		$settingCollection->option_name  = 'm12e-settings';
+		$settingCollection->option_value = serialize($configs);
+		$settingCollection->autoload     = 'no';
+		$settingCollection->save();
+		
+		return $settingCollection;
+	}
 
 }
