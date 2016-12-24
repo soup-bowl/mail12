@@ -13,24 +13,19 @@
                     <tr>
                         <td class="check-column"><input type="checkbox"></td>
                         <td>Sender</td>
-                        <td>Brief</td>
+                        <td>Subject</td>
                         <td>Received Date</td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>Contents</td>
-                        <td>Contents</td>
-                        <td>Contents</td>
-                    </tr>
-
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>Contents</td>
-                        <td>Contents</td>
-                        <td>Contents</td>
-                    </tr>
+                    {% for mailitem in collection %}
+                        <tr>
+                            <td><input type="checkbox" id="item-{{ mailitem.num }}"></td>
+                            <td>{{ mailitem.from }}</td>
+                            <td>{{ mailitem.title }}</td>
+                            <td>{{ mailitem.date }}</td>
+                        </tr>
+                    {% endfor %}
                 <tbody>
             </table>
         <div>
