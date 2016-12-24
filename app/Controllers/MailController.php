@@ -4,6 +4,7 @@ use MailTwelve\Services\settingService;
 use Herbert\Framework\Models\Post;
 use MailTwelve\Helper;
 use Zend\Mail\Storage\Imap;
+use Carbon\Carbon;
 
 class MailController {
 	protected $SettingsService;
@@ -22,23 +23,7 @@ class MailController {
 		$sysConfig  = $this->SettingService->GetMailSystemSettings();
 		$mailips = ['incoming' => gethostbyname($sysConfig['incomingUrl']), 'outgoing' => gethostbyname($sysConfig['outgoingUrl'])];
 		
-		/*
-		// Connect to mailbox, or show an error page if the connection fails.
-		$mbox = null;
-		$mbox = \imap_open("{".$mailips['incoming'].":".$sysConfig['incomingPort']."/imap/readonly/notls}INBOX", $userConfig['username'], $userConfig['password']);
-		if (!$mbox) {
-			return view('@MailTwelve/error/imapExtError.twig', [ 'error' => imap_last_error() ]);
-		}
-		
-		$headers = imap_headers($mbox);
-		$head1 = [];
-		foreach ($headers as $header) {
-			array_push($head1, imap_rfc822_parse_headers($header));
-		}
-		//die(var_dump($headers));
-		
-		imap_close($mbox);*/
-		
+		// Set up the connection.
 		$mailService = new Imap([
 			'host'     => $mailips['incoming'],
 			'port'     => $sysConfig['incomingPort'],
@@ -51,26 +36,14 @@ class MailController {
 		$mail->count   = $mailService->countMessages(); 
 		$mail->letters = [];
 		
-		/*for ($i = 1; $i < $mail->count; $i++) {
-    		$letter;
-			try {
-				$letter = $mailService->getMessage($i);
-			} catch {
-				$letter = "Error reading message: " . $e;
-			}
-			array_push($mail->letters, $letter);
-		}*/
-		
-		//die(var_dump( $mailService->getFolders() ));
-		
 		$mailArray = [];
 		foreach ($mailService as $messageNum => $message) {
     		$mailObj = new \stdClass();
 			$mailObj->num     = $messageNum;
 			$mailObj->title   = $message->subject;
-			$mailObj->from 	  = $message->from; 
+			$mailObj->from    = $message->from; 
 			$mailObj->cc      = (isset($message->cc)) ? $message->cc : null;
-			$mailObj->date    = $message->date;
+			$mailObj->date    = Carbon::parse( $message->date )->format( get_option('date_format').', '.get_option('time_format') );
 			$mailObj->content = $message->getContent();
 			
 			array_push( $mailArray, $mailObj );
